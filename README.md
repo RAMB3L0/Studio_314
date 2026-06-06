@@ -1,4 +1,4 @@
-###Studio 314 — Gestion de Clients Django
+# Studio 314 — Gestion de Clients Django
 
 Application web CRUD complète de gestion de clients, construite avec Django, HTML, CSS et JavaScript.
 
