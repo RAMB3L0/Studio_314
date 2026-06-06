@@ -40,7 +40,7 @@ python manage.py runserver
 ## Architecture du projet
 
 ```
-django_app/
+Stydio_314/
 ├── manage.py
 ├── setup.py                    ← Script d'initialisation
 ├── requirements.txt
