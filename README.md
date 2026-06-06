@@ -37,7 +37,7 @@ python manage.py runserver
 
 ---
 
-## 📁 Architecture du projet
+## Architecture du projet
 
 ```
 django_app/
@@ -85,14 +85,14 @@ django_app/
 
 ---
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
 ### Gestion Clients (CRUD)
-- ✅ **Créer** un client (formulaire multi-sections)
-- ✅ **Lire** la liste avec pagination et filtres
-- ✅ **Modifier** tous les champs d'un client
-- ✅ **Supprimer** avec confirmation
-- ✅ **Voir** la fiche détaillée d'un client
+- **Créer** un client (formulaire multi-sections)
+- **Lire** la liste avec pagination et filtres
+- **Modifier** tous les champs d'un client
+- **Supprimer** avec confirmation
+- **Voir** la fiche détaillée d'un client
 
 ### Champs Client
 - Identité : Nom, Prénom, Email, Téléphone, Date de naissance
@@ -134,7 +134,7 @@ django_app/
 
 ---
 
-## 🔐 Sécurité
+## Sécurité
 
 - Authentification Django intégrée
 - CSRF protection sur tous les formulaires
