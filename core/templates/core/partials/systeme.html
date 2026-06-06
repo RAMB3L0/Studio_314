@@ -1,0 +1,118 @@
+{% load static %}
+<div class="systeme-page">
+  <div class="section-title-bar">
+    <h2>Informations Système</h2>
+    <p>État du serveur et de l'environnement d'exécution</p>
+  </div>
+
+  <div class="sys-grid">
+    <!-- Environnement -->
+    <div class="sys-card">
+      <div class="sys-card-header">
+        <div class="sys-status-dot sys-status-ok"></div>
+        <h3>Environnement Python</h3>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Version Python</span>
+        <span class="sys-value sys-code">{{ python_version }}</span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Framework Django</span>
+        <span class="sys-value sys-code">{{ django_version }}</span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Système d'exploitation</span>
+        <span class="sys-value sys-code">{{ os_info }}</span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Mode Debug</span>
+        <span class="sys-value">
+          {% if debug %}<span class="badge badge-prospect">Activé</span>
+          {% else %}<span class="badge badge-actif">Désactivé</span>{% endif %}
+        </span>
+      </div>
+    </div>
+
+    <!-- Base de données -->
+    <div class="sys-card">
+      <div class="sys-card-header">
+        <div class="sys-status-dot sys-status-ok"></div>
+        <h3>Base de données</h3>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Moteur</span>
+        <span class="sys-value sys-code">SQLite 3</span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Total clients</span>
+        <span class="sys-value"><strong>{{ total_clients }}</strong></span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Total interactions</span>
+        <span class="sys-value"><strong>{{ total_interactions }}</strong></span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">État</span>
+        <span class="sys-value"><span class="badge badge-actif">✓ Connectée</span></span>
+      </div>
+    </div>
+
+    <!-- Sécurité -->
+    <div class="sys-card">
+      <div class="sys-card-header">
+        <div class="sys-status-dot sys-status-ok"></div>
+        <h3>Sécurité</h3>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">CSRF Protection</span>
+        <span class="sys-value"><span class="badge badge-actif">✓ Active</span></span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Auth Middleware</span>
+        <span class="sys-value"><span class="badge badge-actif">✓ Active</span></span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Sessions</span>
+        <span class="sys-value"><span class="badge badge-actif">✓ Actives</span></span>
+      </div>
+      <div class="sys-field">
+        <span class="sys-label">Utilisateur courant</span>
+        <span class="sys-value sys-code">{{ request.user.username }}</span>
+      </div>
+    </div>
+
+    <!-- Checklist santé -->
+    <div class="sys-card">
+      <div class="sys-card-header">
+        <div class="sys-status-dot sys-status-ok"></div>
+        <h3>Santé de l'application</h3>
+      </div>
+      <div class="health-checks">
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>Serveur Django opérationnel</span>
+        </div>
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>Base de données accessible</span>
+        </div>
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>Modèles migrés</span>
+        </div>
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>Fichiers statiques disponibles</span>
+        </div>
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>Authentification fonctionnelle</span>
+        </div>
+        <div class="health-item health-ok">
+          <span class="health-icon">✓</span>
+          <span>API JSON disponible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

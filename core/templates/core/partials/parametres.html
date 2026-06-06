@@ -1,0 +1,142 @@
+{% load static %}
+<div class="parametres-page">
+  <div class="section-title-bar">
+    <h2>Paramètres</h2>
+    <p>Configuration de l'application HellFire CRM</p>
+  </div>
+
+  <div class="params-grid">
+    <!-- Compte utilisateur -->
+    <div class="param-card">
+      <div class="param-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <h3>Compte utilisateur</h3>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Identifiant</span>
+        <span class="param-value">{{ request.user.username }}</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Nom complet</span>
+        <span class="param-value">{{ request.user.get_full_name|default:"Non renseigné" }}</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Email</span>
+        <span class="param-value">{{ request.user.email|default:"—" }}</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Rôle</span>
+        <span class="param-value">
+          {% if request.user.is_superuser %}
+          <span class="badge badge-vip">Super Admin</span>
+          {% elif request.user.is_staff %}
+          <span class="badge badge-actif">Staff</span>
+          {% else %}
+          <span class="badge-cat">Utilisateur</span>
+          {% endif %}
+        </span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Dernier login</span>
+        <span class="param-value">{{ request.user.last_login|date:"d/m/Y à H:i"|default:"—" }}</span>
+      </div>
+      <div class="param-actions">
+        <a href="/admin/password_change/" class="btn-secondary" target="_blank">Changer le mot de passe</a>
+      </div>
+    </div>
+
+    <!-- Apparence -->
+    <div class="param-card">
+      <div class="param-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4l3 3"/>
+        </svg>
+        <h3>Apparence</h3>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Thème</span>
+        <span class="param-value">Sombre (Dark)</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Couleur d'accentuation</span>
+        <span class="param-value">
+          <span class="color-swatch" style="background:#ff4e42;"></span> HellFire Red
+        </span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Police</span>
+        <span class="param-value">Inter (Google Fonts)</span>
+      </div>
+    </div>
+
+    <!-- Application -->
+    <div class="param-card">
+      <div class="param-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="9" y1="9" x2="15" y2="15"/>
+          <line x1="15" y1="9" x2="9" y2="15"/>
+        </svg>
+        <h3>Application</h3>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Nom</span>
+        <span class="param-value">Studio 314</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Version</span>
+        <span class="param-value">1.0</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Langue</span>
+        <span class="param-value">Français (fr-FR)</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Fuseau horaire</span>
+        <span class="param-value">Europe/Paris (UTC+1)</span>
+      </div>
+      <div class="param-field">
+        <span class="param-label">Base de données</span>
+        <span class="param-value">SQLite 3</span>
+      </div>
+    </div>
+
+    <!-- Actions rapides -->
+    <div class="param-card">
+      <div class="param-card-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <h3>Actions rapides</h3>
+      </div>
+      <div class="quick-actions">
+        <a href="{% url 'client_export_csv' %}" class="quick-action-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Exporter les clients (CSV)
+        </a>
+        <a href="/admin/" class="quick-action-btn" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Administration Django
+        </a>
+        <a href="{% url 'logout' %}" class="quick-action-btn quick-action-danger">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Se déconnecter
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

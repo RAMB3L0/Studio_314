@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Studio 314 — Connexion</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'core/css/login.css' %}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="login-bg">
+    <div class="particles" id="particles"></div>
+    <div class="login-container">
+      <div class="login-card">
+
+        <div class="login-brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4 L34 12 L34 28 L20 36 L6 28 L6 12 Z" stroke="#ff4e42" stroke-width="2" fill="none"/>
+              <path d="M20 4 L20 36" stroke="#ff4e42" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <path d="M6 12 L34 28" stroke="#ff4e42" stroke-width="1" stroke-dasharray="2 4" opacity="0.5"/>
+              <path d="M34 12 L6 28" stroke="#ff4e42" stroke-width="1" stroke-dasharray="2 4" opacity="0.5"/>
+              <circle cx="20" cy="20" r="4" fill="#ff4e42"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Studio 314</h1>
+            <span>CRM — Gestion Clients</span>
+          </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            <span class="alert-icon">
+              {% if message.tags == 'error' %}✕{% elif message.tags == 'success' %}✓{% else %}ℹ{% endif %}
+            </span>
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post" class="login-form" id="loginForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Identifiant</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+              <input type="text" id="username" name="username" placeholder="Votre identifiant" required autocomplete="username"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <div class="input-wrapper">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="password" id="password" name="password" placeholder="Votre mot de passe" required autocomplete="current-password"/>
+              <button type="button" class="toggle-password" onclick="togglePassword()">
+                <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-login" id="btnLogin">
+            <span class="btn-text">Se connecter</span>
+            <span class="btn-loader" id="btnLoader" style="display:none;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinner">
+                <path d="M21 12a9 9 0 11-6.219-8.56"/>
+              </svg>
+            </span>
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <p>Studio 314 v1.0 &mdash; <span>Gestion de Clients</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'core/js/login.js' %}"></script>
+</body>
+</html>

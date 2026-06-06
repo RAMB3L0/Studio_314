@@ -1,0 +1,155 @@
+{% load static %}
+<div class="accueil-page">
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+          <path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value" data-count="{{ total_clients }}">{{ total_clients }}</div>
+        <div class="kpi-label">Total Clients</div>
+      </div>
+      <div class="kpi-trend kpi-trend-up">+{{ nouveaux_mois|default:0 }} ce mois</div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ clients_actifs }}</div>
+        <div class="kpi-label">Clients Actifs</div>
+      </div>
+      <div class="kpi-trend">
+        {% if total_clients > 0 %}
+          {{ clients_actifs|floatformat:0 }} / {{ total_clients }}
+        {% else %}—{% endif %}
+      </div>
+    </div>
+
+    <div class="kpi-card kpi-gold">
+      <div class="kpi-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ clients_vip }}</div>
+        <div class="kpi-label">Clients VIP</div>
+      </div>
+      <div class="kpi-trend">Premium</div>
+    </div>
+
+    <div class="kpi-card kpi-purple">
+      <div class="kpi-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+        </svg>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ ca_total|floatformat:0 }} €</div>
+        <div class="kpi-label">Chiffre d'affaires</div>
+      </div>
+      <div class="kpi-trend">Total cumulé</div>
+    </div>
+  </div>
+
+  
+
+  <!-- Derniers clients + Interactions -->
+  <div class="dashboard-grid-2">
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <h3>Derniers clients ajoutés</h3>
+        <a href="#" class="link-voir-tout" data-section="database" data-url="{% url 'database' %}">Voir tout →</a>
+      </div>
+      <div class="recent-list">
+        {% for client in derniers_clients %}
+        <div class="recent-item">
+          <div class="recent-avatar" style="background: {{ client.statut|lower|slice:':1'|default:'#555' }}">
+            {{ client.prenom|first|upper }}{{ client.nom|first|upper }}
+          </div>
+          <div class="recent-info">
+            <strong>{{ client.get_full_name }}</strong>
+            <span>{{ client.email }}</span>
+          </div>
+          <div class="recent-meta">
+            <span class="badge badge-{{ client.statut }}">{{ client.get_statut_display }}</span>
+            <span class="recent-date">{{ client.date_creation|date:"d/m/Y" }}</span>
+          </div>
+          <div class="recent-actions">
+            <button class="btn-icon" onclick="loadClientDetail({{ client.pk }})" title="Voir">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+            <button class="btn-icon" onclick="loadClientEdit({{ client.pk }})" title="Modifier">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+          <p>Aucun client pour le moment.</p>
+          <button class="btn-primary" onclick="loadModal('/clients/new/', 'Nouveau Client');">
+            + Ajouter un client
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Interactions récentes -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <h3>Interactions récentes</h3>
+      </div>
+      <div class="interactions-list">
+        {% for inter in interactions_recentes %}
+        <div class="interaction-item">
+          <div class="inter-type inter-type-{{ inter.type_interaction }}">
+            {% if inter.type_interaction == 'appel' %}📞
+            {% elif inter.type_interaction == 'email' %}📧
+            {% elif inter.type_interaction == 'reunion' %}🤝
+            {% elif inter.type_interaction == 'visite' %}🏢
+            {% else %}💬{% endif %}
+          </div>
+          <div class="inter-content">
+            <strong>{{ inter.client.get_full_name }}</strong>
+            <span>{{ inter.get_type_interaction_display }} — {{ inter.description|truncatechars:50 }}</span>
+          </div>
+          <div class="inter-date">{{ inter.date|date:"d/m H:i" }}</div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+          <p>Aucune interaction enregistrée.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Données pour les graphiques
+  const evolutionData = {{ clients_par_mois|safe }};
+  const statutData = {{ repartition_statut|safe }};
+
+  document.addEventListener('DOMContentLoaded', function() {
+    initAccueilCharts(evolutionData, statutData);
+  });
+</script>

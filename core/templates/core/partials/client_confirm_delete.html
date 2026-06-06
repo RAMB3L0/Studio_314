@@ -1,0 +1,48 @@
+{% load static %}
+<div class="confirm-delete">
+  <div class="confirm-icon">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ff4e42" stroke-width="1.5">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  </div>
+  <h3>Confirmer la suppression</h3>
+  <p>Vous êtes sur le point de supprimer le client :</p>
+  <p class="confirm-name"><strong>{{ client.get_full_name }}</strong></p>
+  <p class="confirm-email">{{ client.email }}</p>
+  <p class="confirm-warning">⚠️ Cette action est irréversible. Toutes les interactions associées seront également supprimées.</p>
+
+  <div class="confirm-actions">
+    <button class="btn-secondary" onclick="closeModal()">Annuler</button>
+    <form method="post" action="{% url 'client_delete' client.pk %}" id="deleteForm">
+      {% csrf_token %}
+      <button type="submit" class="btn-danger">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+        </svg>
+        Supprimer définitivement
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById('deleteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch(this.action, {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        closeModal();
+        showToast(res.message, 'success');
+        setTimeout(() => loadSection('database', '/partials/database/'), 800);
+      }
+    });
+  });
+</script>

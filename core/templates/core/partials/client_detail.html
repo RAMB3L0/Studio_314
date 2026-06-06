@@ -1,0 +1,221 @@
+{% load static %}
+<div class="client-detail">
+
+  <!-- Header client -->
+  <div class="detail-header">
+    <div class="detail-avatar">
+      {{ client.prenom|first|upper }}{{ client.nom|first|upper }}
+    </div>
+    <div class="detail-title">
+      <h2>{{ client.get_full_name }}</h2>
+      {% if client.entreprise %}<p class="detail-company">{{ client.entreprise }}</p>{% endif %}
+      <div class="detail-badges">
+        <span class="badge badge-{{ client.statut }}">{{ client.get_statut_display }}</span>
+        <span class="badge-cat">{{ client.get_categorie_display }}</span>
+      </div>
+    </div>
+    <div class="detail-actions-top">
+      <button class="btn-primary" onclick="loadClientEdit({{ client.pk }})">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        Modifier
+      </button>
+      <button class="btn-danger" onclick="confirmDeleteClient({{ client.pk }}, '{{ client.get_full_name|escapejs }}')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+        </svg>
+        Supprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- Info grid -->
+  <div class="detail-grid">
+    <!-- Coordonnées -->
+    <div class="detail-card">
+      <div class="detail-card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 15h-1l1 1.92z"/>
+        </svg>
+        Coordonnées
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Email</span>
+        <a href="mailto:{{ client.email }}" class="field-value field-link">{{ client.email }}</a>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Téléphone</span>
+        <span class="field-value">{{ client.telephone|default:"—" }}</span>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Date de naissance</span>
+        <span class="field-value">{{ client.date_naissance|date:"d/m/Y"|default:"—" }}</span>
+      </div>
+    </div>
+
+    <!-- Adresse -->
+    <div class="detail-card">
+      <div class="detail-card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Adresse
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Adresse</span>
+        <span class="field-value">{{ client.adresse|default:"—" }}</span>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Ville</span>
+        <span class="field-value">{{ client.code_postal|default:"" }} {{ client.ville|default:"—" }}</span>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Pays</span>
+        <span class="field-value">{{ client.pays|default:"—" }}</span>
+      </div>
+    </div>
+
+    <!-- Commercial -->
+    <div class="detail-card">
+      <div class="detail-card-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+        </svg>
+        Commercial
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Chiffre d'affaires</span>
+        <span class="field-value ca-highlight">{{ client.chiffre_affaires|floatformat:2 }} €</span>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Créé le</span>
+        <span class="field-value">{{ client.date_creation|date:"d/m/Y à H:i" }}</span>
+      </div>
+      <div class="detail-field">
+        <span class="field-label">Dernière modif.</span>
+        <span class="field-value">{{ client.date_modification|date:"d/m/Y à H:i" }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  {% if client.notes %}
+  <div class="detail-notes">
+    <div class="detail-card-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      Notes
+    </div>
+    <p class="notes-text">{{ client.notes }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Interactions -->
+  <div class="detail-interactions">
+    <div class="inter-header">
+      <h3>Historique des interactions</h3>
+      <button class="btn-primary btn-sm" onclick="toggleInteractionForm()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Ajouter
+      </button>
+    </div>
+
+    <!-- Formulaire d'ajout d'interaction -->
+    <div class="inter-form-wrapper" id="interactionFormWrapper" style="display:none;">
+      <form method="post" action="{% url 'interaction_create' client.pk %}" id="interactionForm">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type</label>
+            {{ interaction_form.type_interaction }}
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            {{ interaction_form.date }}
+          </div>
+        </div>
+        <div class="form-group form-group-full">
+          <label>Description</label>
+          {{ interaction_form.description }}
+        </div>
+        <div class="form-actions-sm">
+          <button type="button" class="btn-secondary" onclick="toggleInteractionForm()">Annuler</button>
+          <button type="submit" class="btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Liste -->
+    <div class="inter-list" id="interactionsList">
+      {% for inter in interactions %}
+      <div class="inter-row">
+        <div class="inter-icon inter-icon-{{ inter.type_interaction }}">
+          {% if inter.type_interaction == 'appel' %}📞
+          {% elif inter.type_interaction == 'email' %}📧
+          {% elif inter.type_interaction == 'reunion' %}🤝
+          {% elif inter.type_interaction == 'visite' %}🏢
+          {% else %}💬{% endif %}
+        </div>
+        <div class="inter-body">
+          <div class="inter-row-header">
+            <strong>{{ inter.get_type_interaction_display }}</strong>
+            <span class="inter-row-date">{{ inter.date|date:"d/m/Y à H:i" }}</span>
+          </div>
+          <p>{{ inter.description }}</p>
+          {% if inter.utilisateur %}
+          <small class="inter-user">Par {{ inter.utilisateur }}</small>
+          {% endif %}
+        </div>
+        <form method="post" action="{% url 'interaction_delete' inter.pk %}" class="inter-delete-form">
+          {% csrf_token %}
+          <button type="submit" class="btn-icon btn-delete" title="Supprimer" onclick="return confirm('Supprimer cette interaction ?')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <p>Aucune interaction enregistrée pour ce client.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleInteractionForm() {
+    const w = document.getElementById('interactionFormWrapper');
+    w.style.display = w.style.display === 'none' ? 'block' : 'none';
+  }
+
+  document.getElementById('interactionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = this;
+    const data = new FormData(form);
+    fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.success) {
+        loadClientDetail({{ client.pk }});
+        showToast('Interaction ajoutée !', 'success');
+      }
+    });
+  });
+</script>

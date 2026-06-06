@@ -1,0 +1,110 @@
+{% load static %}
+<div class="stats-page">
+
+  <!-- KPI Row -->
+  <div class="stats-kpi-row">
+    <div class="stats-kpi">
+      <div class="stats-kpi-value">{{ total_clients }}</div>
+      <div class="stats-kpi-label">Total clients</div>
+    </div>
+    <div class="stats-kpi">
+      <div class="stats-kpi-value">{{ ca_total|floatformat:0 }} €</div>
+      <div class="stats-kpi-label">CA total</div>
+    </div>
+    <div class="stats-kpi">
+      <div class="stats-kpi-value">{{ ca_moyen|floatformat:0 }} €</div>
+      <div class="stats-kpi-label">CA moyen</div>
+    </div>
+    <div class="stats-kpi">
+      <div class="stats-kpi-value">{{ nouveaux_ce_mois }}</div>
+      <div class="stats-kpi-label">Nouveaux ce mois</div>
+    </div>
+    <div class="stats-kpi">
+      <div class="stats-kpi-value">{{ clients_vip }}</div>
+      <div class="stats-kpi-label">Clients VIP</div>
+    </div>
+  </div>
+
+  
+
+    <div class="stats-card">
+      <div class="stats-card-header">
+        <h3>Top villes</h3>
+      </div>
+      <div class="top-villes-list">
+        {% for v in par_ville %}
+        <div class="ville-item">
+          <span class="ville-name">{{ v.ville|default:"Non renseigné" }}</span>
+          <div class="ville-bar-wrapper">
+            <div class="ville-bar" style="width: {% if par_ville.0.count > 0 %}{{ v.count|floatformat:0 }}{% else %}0{% endif %}%"></div>
+          </div>
+          <span class="ville-count">{{ v.count }}</span>
+        </div>
+        {% empty %}
+        <p class="empty-text">Aucune donnée de ville disponible.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Top clients par CA -->
+  <div class="stats-card stats-full-width">
+    <div class="stats-card-header">
+      <h3>Top 5 clients par chiffre d'affaires</h3>
+    </div>
+    <div class="top-clients-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Rang</th>
+            <th>Client</th>
+            <th>Email</th>
+            <th>Statut</th>
+            <th>CA (€)</th>
+            <th>Barre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in top_clients %}
+          <tr>
+            <td class="rank-cell">
+              <span class="rank rank-{{ forloop.counter }}">{{ forloop.counter }}</span>
+            </td>
+            <td>
+              <div class="client-name-cell">
+                <div class="client-mini-avatar">{{ c.prenom|first|upper }}{{ c.nom|first|upper }}</div>
+                <div>
+                  <strong>{{ c.get_full_name }}</strong>
+                  {% if c.entreprise %}<small>{{ c.entreprise }}</small>{% endif %}
+                </div>
+              </div>
+            </td>
+            <td>{{ c.email }}</td>
+            <td><span class="badge badge-{{ c.statut }}">{{ c.get_statut_display }}</span></td>
+            <td class="ca-cell"><strong>{{ c.chiffre_affaires|floatformat:2 }}</strong></td>
+            <td>
+              <div class="ca-bar-wrapper">
+                <div class="ca-bar" style="width: {% if top_clients.0.chiffre_affaires > 0 %}{{ c.chiffre_affaires }}{% else %}0{% endif %}%; max-width: 100%;"></div>
+              </div>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="td-empty">Aucun client avec un chiffre d'affaires renseigné.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const statsEvolution = {{ evolution|safe }};
+  const statsParStatut = {{ par_statut|safe }};
+  const statsParCategorie = {{ par_categorie|safe }};
+  const statsInteractions = {{ interactions_par_type|safe }};
+
+  document.addEventListener('DOMContentLoaded', function() {
+    initStatsCharts(statsEvolution, statsParStatut, statsParCategorie, statsInteractions);
+    initVilleBars();
+  });
+</script>

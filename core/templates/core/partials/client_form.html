@@ -1,0 +1,158 @@
+{% load static %}
+<div class="client-form-wrapper">
+  <form method="post" id="clientForm" class="client-form"
+        action="{% if client %}{% url 'client_edit' client.pk %}{% else %}{% url 'client_create' %}{% endif %}">
+    {% csrf_token %}
+
+    <!-- Erreurs globales -->
+    {% if form.non_field_errors %}
+    <div class="form-errors">
+      {% for error in form.non_field_errors %}
+      <p class="form-error-msg">{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Section : Identité -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Identité
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ form.prenom.label }} <span class="required">*</span></label>
+          {{ form.prenom }}
+          {% if form.prenom.errors %}
+          <span class="field-error">{{ form.prenom.errors|join:", " }}</span>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label>{{ form.nom.label }} <span class="required">*</span></label>
+          {{ form.nom }}
+          {% if form.nom.errors %}
+          <span class="field-error">{{ form.nom.errors|join:", " }}</span>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ form.email.label }} <span class="required">*</span></label>
+          {{ form.email }}
+          {% if form.email.errors %}
+          <span class="field-error">{{ form.email.errors|join:", " }}</span>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label>{{ form.telephone.label }}</label>
+          {{ form.telephone }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ form.date_naissance.label }}</label>
+          {{ form.date_naissance }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.entreprise.label }}</label>
+          {{ form.entreprise }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Section : Adresse -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Adresse
+      </div>
+      <div class="form-row">
+        <div class="form-group form-group-full">
+          <label>{{ form.adresse.label }}</label>
+          {{ form.adresse }}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ form.code_postal.label }}</label>
+          {{ form.code_postal }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.ville.label }}</label>
+          {{ form.ville }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.pays.label }}</label>
+          {{ form.pays }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Section : Commercial -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+        </svg>
+        Commercial
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>{{ form.statut.label }}</label>
+          {{ form.statut }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.categorie.label }}</label>
+          {{ form.categorie }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.chiffre_affaires.label }}</label>
+          {{ form.chiffre_affaires }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Section : Notes -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        Notes
+      </div>
+      <div class="form-group form-group-full">
+        {{ form.notes }}
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn-secondary" onclick="closeModal()">Annuler</button>
+      <button type="submit" class="btn-primary" id="btnSubmit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        {{ action }} le client
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('clientForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    submitClientForm(this);
+  });
+</script>
