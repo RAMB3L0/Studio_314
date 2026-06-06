@@ -114,15 +114,6 @@ Stydio_314/
 ### Export
 - Export CSV de tous les clients (compatible Excel, UTF-8 BOM)
 
-### Statistiques & Graphiques (Chart.js)
-- Évolution mensuelle (12 mois)
-- Répartition par statut (pie/doughnut)
-- Répartition par catégorie (barre horizontale)
-- Types d'interactions
-- Top 5 villes
-- Top 5 clients par CA
-- KPIs : Total clients, CA total, CA moyen, nouveaux du mois
-
 ### Interface SPA
 - Navigation sans rechargement de page (AJAX)
 - Modal pour création/modification/suppression
