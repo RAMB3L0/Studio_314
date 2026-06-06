@@ -2,7 +2,7 @@
 
 Application web CRUD complète de gestion de clients, construite avec Django, HTML, CSS et JavaScript.
 
-###Installation & Lancement
+## Installation & Lancement
 
 ### 1. Prérequis
 - Python 3.10+
