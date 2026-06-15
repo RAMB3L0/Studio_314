@@ -111,9 +111,6 @@ Stydio_314/
 - Filtre par catégorie
 - Pagination (10 par page)
 
-### Export
-- Export CSV de tous les clients (compatible Excel, UTF-8 BOM)
-
 ### Interface SPA
 - Navigation sans rechargement de page (AJAX)
 - Modal pour création/modification/suppression
